@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ViralAI — AI Content Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:#050505;
+color:white;
+overflow-x:hidden;
+}
+
+.background{
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at top left,#00ff9940,transparent 25%),
+radial-gradient(circle at bottom right,#0099ff30,transparent 25%),
+#050505;
+z-index:-1;
+}
+
+.navbar{
+width:100%;
+padding:20px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+backdrop-filter:blur(10px);
+background:rgba(0,0,0,0.3);
+border-bottom:1px solid rgba(255,255,255,0.05);
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+background:linear-gradient(90deg,#00ff99,#00aaff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+display:flex;
+gap:20px;
+}
+
+.nav-links a{
+color:#bdbdbd;
+text-decoration:none;
+transition:0.3s;
+}
+
+.nav-links a:hover{
+color:white;
+}
+
+.hero{
+width:90%;
+max-width:1200px;
+margin:auto;
+padding-top:80px;
+text-align:center;
+}
+
+.hero h1{
+font-size:70px;
+font-weight:800;
+line-height:1.1;
+}
+
+.gradient{
+background:linear-gradient(90deg,#00ff99,#00aaff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+margin-top:25px;
+font-size:20px;
+color:#bdbdbd;
+line-height:1.7;
+}
+
+.hero-buttons{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.hero-buttons button{
+padding:15px 28px;
+border:none;
+border-radius:15px;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+transition:0.3s;
+}
+
+.primary-btn{
+background:linear-gradient(90deg,#00ff99,#00aaff);
+color:black;
+}
+
+.secondary-btn{
+background:#111;
+color:white;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.hero-buttons button:hover{
+transform:scale(1.05);
+}
+
+.generator{
+width:90%;
+max-width:1100px;
+margin:70px auto 0 auto;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+padding:40px;
+border-radius:30px;
+backdrop-filter:blur(12px);
+}
+
+.categories{
+display:flex;
+gap:15px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.categories button{
+padding:14px 20px;
+border:none;
+border-radius:14px;
+cursor:pointer;
+font-weight:700;
+background:#111;
+color:white;
+transition:0.3s;
+}
+
+.categories button:hover{
+background:#1b1b1b;
+transform:translateY(-4px);
+}
+
+.result{
+margin-top:35px;
+background:#0f0f0f;
+border-radius:20px;
+padding:35px;
+min-height:170px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:30px;
+line-height:1.6;
+border:1px solid rgba(255,255,255,0.08);
+animation:fade 0.5s;
+}
+
+.tools{
+margin-top:25px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.tool-btn{
+padding:12px 20px;
+border-radius:12px;
+border:none;
+background:#111;
+color:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.tool-btn:hover{
+background:#1c1c1c;
+}
+
+.stats{
+width:90%;
+max-width:1100px;
+margin:60px auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:#101010;
+padding:30px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.05);
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 30px rgba(0,255,153,0.15);
+}
+
+.card h2{
+font-size:45px;
+color:#00ff99;
+}
+
+.card p{
+margin-top:10px;
+color:#bdbdbd;
+}
+
+.features{
+width:90%;
+max-width:1200px;
+margin:100px auto;
+}
+
+.features-title{
+text-align:center;
+font-size:50px;
+font-weight:800;
+}
+
+.feature-grid{
+margin-top:50px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+}
+
+.feature{
+background:#0f0f0f;
+padding:30px;
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.05);
+transition:0.3s;
+}
+
+.feature:hover{
+transform:translateY(-8px);
+}
+
+.feature h3{
+margin-bottom:15px;
+color:#00ff99;
+}
+
+.feature p{
+color:#bdbdbd;
+line-height:1.7;
+}
+
+.email-box{
+width:90%;
+max-width:800px;
+margin:80px auto;
+text-align:center;
+background:#0f0f0f;
+padding:50px;
+border-radius:30px;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.email-box h2{
+font-size:45px;
+}
+
+.email-box p{
+margin-top:15px;
+color:#bdbdbd;
+}
+
+.email-form{
+margin-top:30px;
+display:flex;
+gap:15px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.email-form input{
+padding:16px;
+width:320px;
+border:none;
+border-radius:14px;
+background:#1a1a1a;
+color:white;
+font-size:16px;
+}
+
+.email-form button{
+padding:16px 26px;
+border:none;
+border-radius:14px;
+background:linear-gradient(90deg,#00ff99,#00aaff);
+font-weight:700;
+cursor:pointer;
+}
+
+.footer{
+margin-top:80px;
+padding:40px;
+text-align:center;
+color:#777;
+border-top:1px solid rgba(255,255,255,0.05);
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="navbar">
+
+<div class="logo">
+ViralAI
+</div>
+
+<div class="nav-links">
+<a href="#">Features</a>
+<a href="#">Pricing</a>
+<a href="#">AI</a>
+<a href="#">Contact</a>
+</div>
+
+</div>
+
+<div class="hero">
+
+<h1>
+Create <span class="gradient">viral content</span><br>
+with artificial intelligence
+</h1>
+
+<p>
+Generate TikTok hooks, business ideas, Instagram bios,
+captions and viral content in seconds.
+</p>
+
+<div class="hero-buttons">
+
+<button class="primary-btn" onclick="generateRandom()">
+Generate AI
+</button>
+
+<button class="secondary-btn" onclick="scrollToGenerator()">
+Explore Platform
+</button>
+
+</div>
+
+</div>
+
+<div class="generator" id="generator">
+
+<div class="categories">
+
+<button onclick="generate('hooks')">
+⚡ Hooks
+</button>
+
+<button onclick="generate('business')">
+💰 Business
+</button>
+
+<button onclick="generate('bio')">
+🔥 Bio
+</button>
+
+<button onclick="generate('motivation')">
+🚀 Motivation
+</button>
+
+<button onclick="generate('captions')">
+🎬 Captions
+</button>
+
+<button onclick="generate('money')">
+🧠 Money
+</button>
+
+</div>
+
+<div class="result" id="result">
+Your AI result will appear here.
+</div>
+
+<div class="tools">
+
+<button class="tool-btn" onclick="copyText()">
+📋 Copy
+</button>
+
+<button class="tool-btn" onclick="generateRandom()">
+🎲 Random
+</button>
+
+<button class="tool-btn" onclick="shareText()">
+📤 Share
+</button>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="card">
+<h2 id="counter">0</h2>
+<p>AI generations</p>
+</div>
+
+<div class="card">
+<h2>24/7</h2>
+<p>Online worldwide</p>
+</div>
+
+<div class="card">
+<h2>100%</h2>
+<p>Free to start</p>
+</div>
+
+</div>
+
+<div class="features">
+
+<div class="features-title">
+Startup Features
+</div>
+
+<div class="feature-grid">
+
+<div class="feature">
+<h3>⚡ AI Content</h3>
+<p>
+Generate viral content instantly using modern AI-inspired systems.
+</p>
+</div>
+
+<div class="feature">
+<h3>📈 Growth</h3>
+<p>
+Built for creators, startups, influencers and entrepreneurs.
+</p>
+</div>
+
+<div class="feature">
+<h3>🌍 Global</h3>
+<p>
+Accessible from anywhere in the world directly from your phone.
+</p>
+</div>
+
+<div class="feature">
+<h3>💸 Monetization</h3>
+<p>
+Perfect for building traffic, ads, premium plans and audience.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="email-box">
+
+<h2>
+Get free AI updates
+</h2>
+
+<p>
+Join the future of AI creators and receive exclusive viral ideas.
+</p>
+
+<div class="email-form">
+
+<input type="email" placeholder="Enter your email">
+
+<button>
+Join Free
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+ViralAI © 2026 — Future of AI content generation.
+</div>
+
+<script>
+
+let total = 0;
+
+const data = {
+
+hooks:[
+"Personne ne parle encore de cette méthode secrète.",
+"Tu peux commencer ce business avec seulement un téléphone.",
+"Le système que les créateurs utilisent pour devenir viraux.",
+"Cette astuce peut changer ton futur.",
+"Pourquoi certaines personnes réussissent plus vite.",
+"99% des gens ignorent cette opportunité."
+],
+
+business:[
+"Créer une agence TikTok IA.",
+"Lancer une chaîne Shorts automatisée.",
+"Créer une boutique de produits viraux.",
+"Vendre des prompts IA premium.",
+"Créer un SaaS IA.",
+"Créer une newsletter business."
+],
+
+bio:[
+"Future millionaire building in silence.",
+"Discipline > excuses.",
+"Creating my empire.",
+"Dream big. Move smart.",
+"Focused on success."
+],
+
+motivation:[
+"Le succès aime la discipline.",
+"Travaille pendant que les autres dorment.",
+"La constance bat le talent.",
+"Ton futur dépend de toi.",
+"Ne t’arrête jamais."
+],
+
+captions:[
+"POV: tu découvres enfin comment réussir.",
+"Cette idée peut devenir énorme.",
+"Le futur appartient aux créateurs.",
+"Commence maintenant.",
+"Personne n’est prêt pour ça."
+],
+
+money:[
+"Créer un outil IA viral.",
+"Monter une agence de montage Shorts.",
+"Créer une page motivation automatisée.",
+"Vendre des ebooks numériques.",
+"Créer un business TikTok anonyme."
+]
+
+};
+
+function generate(type){
+
+const array = data[type];
+
+const random =
+array[Math.floor(Math.random()*array.length)];
+
+document.getElementById("result").innerHTML = random;
+
+total++;
+
+document.getElementById("counter").innerHTML = total;
+
+}
+
+function generateRandom(){
+
+const keys = Object.keys(data);
+
+const randomKey =
+keys[Math.floor(Math.random()*keys.length)];
+
+generate(randomKey);
+
+}
+
+function copyText(){
+
+const text =
+document.getElementById("result").innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("Copied 🚀");
+
+}
+
+function shareText(){
+
+const text =
+document.getElementById("result").innerText;
+
+if(navigator.share){
+
+navigator.share({
+title:"ViralAI",
+text:text
+});
+
+}else{
+
+alert("Partage non supporté sur cet appareil.");
+
+}
+
+}
+
+function scrollToGenerator(){
+
+document.getElementById("generator")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+</script>
+
+</body>
+</html>
